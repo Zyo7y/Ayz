@@ -1,0 +1,25 @@
+body {
+  background-image: url('Picsart_24-04-11_02-03-56-531.jpg'); /* يمكنك تغيير صورة الخلفية هنا */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; /* تجنب تكرار الصورة */
+  margin: 0; /* إزالة الهوامش الافتراضية */
+  padding: 0; /* إزالة التبطين الافتراضي */
+}
+
+#messageBox {
+  background-color: rgba(255, 255, 255, 0.7); /* جعل صندوق الرسائل شفافًا */
+  border-radius: 10px;
+  padding: 20px;
+  margin: 0 auto; /* توسيط صندوق الرسائل */
+  max-width: 500px; /* تحديد أقصى عرض لصندوق الرسائل */
+}
+
+#timer {
+  background-color: rgba(255, 255, 255, 0.7); /* جعل التايمر شفافًا */
+  border-radius: 10px;
+  padding: 10px 20px;
+  margin: 20px auto; /* توسيط التايمر */
+  max-width: 300px; /* تحديد أقصى عرض للتايمر */
+  text-align: center;
+}

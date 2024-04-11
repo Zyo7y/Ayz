@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Message Box</title>
+<style>
+body {
+  background-image: url('omg.jpg'); /* تغيير الصورة الخلفية */
+  background-size: cover;
+  background-position: center;
+  font-family: Arial, sans-serif;
+  height: 100vh; /* جعل ارتفاع الصفحة يملأ الشاشة بالكامل */
+  margin: 0; /* إزالة الهوامش الافتراضية */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#container {
+  background-color: rgba(255, 255, 255, 0.1); /* خلفية شفافة */
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center; /* محاذاة المحتوى في الوسط */
+}
+
+#messageBox {
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.2); /* خلفية شفافة */
+  padding: 10px;
+  border-radius: 5px;
+  position: relative; /* لتحديد موقع رسالة التأكيد بناءً على هذا العنصر */
+}
+
+textarea {
+  width: 300px;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  background-color: transparent; /* خلفية شفافة */
+}
+
+button {
+  padding: 10px 20px;
+  background-color: rgba(0, 123, 255, 0.7); /* لون زر شفاف */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 0.8; /* شفافية */
+}
+
+button:hover {
+  background-color: rgba(0, 123, 255, 1); /* لون زر غير شفاف عند التحويم */
+}
+
+#timer {
+  display: none; /* إخفاء التايمر بعد التسجيل الأول */
+  font-size: 24px;
+  background-color: rgba(255, 255, 255, 0.5); /* خلفية شفافة */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.confirmation {
+  color: green;
+  position: absolute; /* تحديد موقع رسالة التأكيد بناءً على هذا العنصر */
+  bottom: -30px; /* تحديد المسافة بين رسالة التأكيد والزر */
+  left: 50%; /* وضع رسالة التأكيد في المنتصف بناءً على العرض */
+  transform: translateX(-50%); /* توسيط رسالة التأكيد بناءً على العرض */
+}
+</style>
+</head>
+<body>
+<div id="container">
+  <h1 style="color: blue; font-size: 14px; margin-top: 10px;">تأكد من الاسم جيداً، ولا تغيره طوال مسيرتك فالمدرسة </h1>
+  <div id="messageBox">
+    <textarea id="messageInput" placeholder="اكتب اسمك هنا" style="text-align: center; margin-top: 10px; width: 250px; height: 80px;"></textarea>
+    <button onclick="sendMessage()">إرسال</button>
+    <span id="confirmation" class="confirmation" style="display:none;"></span>
+  </div>
+</div>
+
+<script>
+var canSendMessage = true; // تتبع إمكانية إرسال رسالة جديدة
+var lastMessageTime = 0; // تتبع وقت آخر رسالة تم إرسالها
+
+function sendMessage() {
+  if (canSendMessage) {
+    var currentTime = new Date().getTime();
+    if (currentTime - lastMessageTime >= 15 * 60 * 1000) {
+      var message = document.getElementById('messageInput').value;
+      if (message.trim() !== '') { // التأكد من عدم فراغ الرسالة
+        var telegramBotToken = '7090598873:AAGJrvucqWGUC5zejXqGXyiWEGuVhr6-aRs';
+        var chatId = '-4137900042'; // معرف المجموعة
+
+        var telegramBotAPI = 'https://api.telegram.org/bot' + telegramBotToken + '/sendMessage';
+        fetch(telegramBotAPI, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ chat_id: chatId, text: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('confirmation').textContent = 'تم التسجيل بنجاح';
+          document.getElementById('confirmation').style.display = 'inline'; // إظهار رسالة التأكيد
+          lastMessageTime = currentTime; // تحديث وقت آخر رسالة
+          setTimeout(function() {
+            document.getElementById('confirmation').style.display = 'none'; // إخفاء رسالة التأكيد
+          }, 5000000000000000000); // 5 ثواني
+        })
+        .catch(error => {
+          console.error('Error sending message:', error);
+          alert('حدث خطأ أثناء إرسال الرسالة.');
+        });
+      } else {
+        alert('الرجاء إدخال رسالة قبل الإرسال.');
+      }
+    } else {
+      alert(' لقد قمت بالتسجيل بالفعل');
+    }
+  }
+}
+</script>
+</body>
+</html>
